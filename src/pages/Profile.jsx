@@ -9,13 +9,13 @@ export default function Profile() {
       <div className="page-head">
         <div>
           <h1>Profile</h1>
-          <p>Your identity, plan, and default generator settings.</p>
+          <p>Deine Identität, dein Plan und die Standard-Einstellungen des Generators.</p>
         </div>
-        <span className="pill pro">{u.plan} plan</span>
+        <span className="pill pro">{u.plan}-Plan</span>
       </div>
 
       <div className="panel">
-        <h2>Identity</h2>
+        <h2>Identität</h2>
         <div style={{ display: "flex", gap: 18, alignItems: "center", flexWrap: "wrap" }}>
           <div
             style={{
@@ -29,13 +29,13 @@ export default function Profile() {
             <input
               className="input"
               value={u.name}
-              placeholder="Display name"
+              placeholder="Anzeigename"
               onChange={(e) => set((s) => ({ ...s, user: { ...s.user, name: e.target.value } }))}
             />
             <input
               className="input"
               value={u.email}
-              placeholder="Email"
+              placeholder="E-Mail"
               onChange={(e) => set((s) => ({ ...s, user: { ...s.user, email: e.target.value } }))}
             />
           </div>
@@ -45,7 +45,7 @@ export default function Profile() {
       <div className="panel">
         <h2>Credits</h2>
         <p style={{ color: "var(--dim)", fontSize: "0.9rem" }}>
-          {state.credits} credits remaining · each clip costs 2–4 depending on duration.
+          {state.credits} Credits übrig · jeder Clip kostet je nach Dauer 2–4.
         </p>
         <button
           className="btn"
@@ -54,14 +54,14 @@ export default function Profile() {
             set((s) => ({ ...s, credits: s.credits + 24 }));
           }}
         >
-          +24 demo credits
+          +24 Demo-Credits
         </button>
       </div>
 
       <div className="panel">
-        <h2>Default generator settings</h2>
+        <h2>Standard-Einstellungen des Generators</h2>
         <div className="field">
-          <label>Style</label>
+          <label>Stil</label>
           <div className="chips">
             {STYLES.map((s) => (
               <button
@@ -75,7 +75,7 @@ export default function Profile() {
           </div>
         </div>
         <div className="field">
-          <label>Motion</label>
+          <label>Bewegung</label>
           <div className="chips">
             {MOTIONS.map((m) => (
               <button

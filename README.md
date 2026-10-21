@@ -4,7 +4,7 @@ Transform your images into stunning animated clips. A React + Vite single-page a
 image-to-video AI tools: pick a style, choose a motion preset, and generate looping clips from
 still images — running entirely in the browser (demo mode, no backend, images never leave your device).
 
-**Live:** https://chowdory.github.io/motioncraft-ai/
+**Live:** https://chowdory.github.io/motioncraft-ai/ — die komplette UI ist auf Deutsch.
 
 ## Pages
 

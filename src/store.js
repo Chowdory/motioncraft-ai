@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 const KEY = "motioncraft:v1";
 
 const defaults = {
-  user: { name: "Creator", email: "you@example.com", plan: "Free", role: "admin" },
+  user: { name: "Creator", email: "du@beispiel.de", plan: "Kostenlos", role: "admin" },
   credits: 24,
   clips: [],
   prefs: { style: "cinematic", motion: "ken-burns", duration: 8, aspect: "16:9", loop: true },
@@ -48,20 +48,20 @@ export function useStore() {
 /* ===== Domain ===== */
 
 export const STYLES = [
-  { id: "cinematic", name: "Cinematic", emoji: "🎬", desc: "Film-grade look with dramatic depth" },
-  { id: "anime", name: "Anime", emoji: "🌸", desc: "Vibrant Japanese animation aesthetic" },
-  { id: "ugc", name: "UGC", emoji: "📱", desc: "Authentic creator-style phone footage" },
-  { id: "neon", name: "Neon", emoji: "⚡", desc: "High-energy cyberpunk color grade" },
+  { id: "cinematic", name: "Cinematic", emoji: "🎬", desc: "Filmreifer Look mit dramatischer Tiefe" },
+  { id: "anime", name: "Anime", emoji: "🌸", desc: "Leuchtende japanische Anime-Ästhetik" },
+  { id: "ugc", name: "UGC", emoji: "📱", desc: "Authentischer Creator-Look, wie vom Handy" },
+  { id: "neon", name: "Neon", emoji: "⚡", desc: "Energievoller Cyberpunk-Look" },
 ];
 
 export const MOTIONS = [
-  { id: "ken-burns", name: "Ken Burns", desc: "Classic slow documentary drift" },
-  { id: "zoom-in", name: "Zoom In", desc: "Push toward the subject" },
-  { id: "zoom-out", name: "Zoom Out", desc: "Reveal the wider scene" },
-  { id: "pan-left", name: "Pan Left", desc: "Smooth lateral move left" },
-  { id: "pan-right", name: "Pan Right", desc: "Smooth lateral move right" },
-  { id: "orbit", name: "Orbit", desc: "Subtle arc around the center" },
-  { id: "parallax", name: "Parallax", desc: "Handheld float with depth" },
+  { id: "ken-burns", name: "Ken Burns", desc: "Klassischer langsamer Dokumentar-Drift" },
+  { id: "zoom-in", name: "Zoom-In", desc: "Langsame Fahrt aufs Motiv" },
+  { id: "zoom-out", name: "Zoom-Out", desc: "Die Szene öffnet sich" },
+  { id: "pan-left", name: "Schwenk links", desc: "Sanfte Bewegung nach links" },
+  { id: "pan-right", name: "Schwenk rechts", desc: "Sanfte Bewegung nach rechts" },
+  { id: "orbit", name: "Orbit", desc: "Leichter Bogen um die Bildmitte" },
+  { id: "parallax", name: "Parallax", desc: "Handheld-Schweben mit Tiefe" },
 ];
 
 export const DURATIONS = [5, 8, 10];

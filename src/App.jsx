@@ -18,12 +18,12 @@ function Navbar() {
         </Link>
         <div className="nav-links">
           <NavLink to="/generator">Generator</NavLink>
-          <NavLink to="/library">Library</NavLink>
+          <NavLink to="/library">Bibliothek</NavLink>
           <NavLink to="/dashboard">Dashboard</NavLink>
-          <NavLink to="/profile">Profile</NavLink>
+          <NavLink to="/profile">Profil</NavLink>
           <NavLink to="/admin">Admin</NavLink>
         </div>
-        <span className="credits-pill"><b>{state.credits}</b> credits</span>
+        <span className="credits-pill"><b>{state.credits}</b> Credits</span>
       </div>
     </nav>
   );
@@ -33,8 +33,8 @@ function Footer() {
   return (
     <footer className="site">
       <div className="wrap cols">
-        <span>© {new Date().getFullYear()} MotionCraft AI — demo build, generation is simulated locally.</span>
-        <span>Built with React + Vite · Deployed on GitHub Pages</span>
+        <span>© {new Date().getFullYear()} MotionCraft AI — Demo-Build, die Generierung läuft lokal im Browser.</span>
+        <span>Gebaut mit React + Vite · Live auf GitHub Pages</span>
       </div>
     </footer>
   );

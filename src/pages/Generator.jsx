@@ -29,7 +29,7 @@ export default function Generator() {
   function generate() {
     if (!image) return;
     if (state.credits < cost) {
-      setToast({ msg: "Not enough credits — refill them on the Profile page.", kind: "warn" });
+      setToast({ msg: "Nicht genug Credits — du kannst sie auf der Profilseite aufladen.", kind: "warn" });
       setTimeout(() => setToast(null), 2600);
       return;
     }
@@ -64,7 +64,7 @@ export default function Generator() {
       }));
       setTimeout(() => {
         setProgress(-1);
-        setToast({ msg: "Clip generated — find it in your Library.", kind: "ok" });
+        setToast({ msg: "Clip generiert — er liegt jetzt in deiner Bibliothek.", kind: "ok" });
         setTimeout(() => setToast(null), 2600);
       }, 350);
     }, total);
@@ -75,14 +75,14 @@ export default function Generator() {
       <div className="page-head">
         <div>
           <h1>Generator</h1>
-          <p>Turn a still image into an animated clip. Everything runs locally in this demo.</p>
+          <p>Verwandle ein Standbild in einen animierten Clip. In dieser Demo läuft alles lokal im Browser.</p>
         </div>
-        <Link to="/library" className="btn small">Open library →</Link>
+        <Link to="/library" className="btn small">Zur Bibliothek →</Link>
       </div>
 
       <div className="gen-layout">
         <div className="panel">
-          <h2>1 · Your image</h2>
+          <h2>1 · Dein Bild</h2>
           <div
             className={`dropzone${drag ? " drag" : ""}`}
             onClick={() => fileRef.current?.click()}
@@ -95,30 +95,30 @@ export default function Generator() {
             ) : (
               <div>
                 <div className="big">🖼️</div>
-                <b>Drop an image here</b>
-                <p>or click to browse · JPG, PNG, WebP</p>
+                <b>Bild hierher ziehen</b>
+                <p>oder klicken zum Auswählen · JPG, PNG, WebP</p>
               </div>
             )}
           </div>
           <input ref={fileRef} type="file" accept="image/*" hidden onChange={(e) => pickFile(e.target.files[0])} />
 
           <div className="field">
-            <label>Clip title</label>
-            <input className="input" value={title} placeholder="e.g. Golden hour portrait" onChange={(e) => setTitle(e.target.value)} />
+            <label>Clip-Titel</label>
+            <input className="input" value={title} placeholder="z. B. Porträt zur goldenen Stunde" onChange={(e) => setTitle(e.target.value)} />
           </div>
 
           <div className="field">
-            <label>Duration · {duration}s</label>
+            <label>Dauer · {duration} s</label>
             <div className="chips">
               {DURATIONS.map((d) => (
                 <button key={d} className={`chip${duration === d ? " on" : ""}`} onClick={() => setDuration(d)}>{d}s</button>
               ))}
             </div>
-            <div className="hint">Costs {cost} credits</div>
+            <div className="hint">Kostet {cost} Credits</div>
           </div>
 
           <div className="field">
-            <label>Aspect ratio</label>
+            <label>Seitenverhältnis</label>
             <div className="chips">
               {ASPECTS.map((a) => (
                 <button key={a} className={`chip${aspect === a ? " on" : ""}`} onClick={() => setAspect(a)}>{a}</button>
@@ -128,7 +128,7 @@ export default function Generator() {
         </div>
 
         <div className="panel">
-          <h2>2 · Style & motion</h2>
+          <h2>2 · Stil & Bewegung</h2>
           <div className="grid-3" style={{ marginTop: 6 }}>
             {STYLES.map((s) => (
               <div
@@ -146,7 +146,7 @@ export default function Generator() {
           </div>
 
           <div className="field">
-            <label>Motion preset</label>
+            <label>Bewegungs-Preset</label>
             <div className="chips">
               {MOTIONS.map((m) => (
                 <button
@@ -162,15 +162,15 @@ export default function Generator() {
             <div className="hint">{motionById(motion)?.desc}</div>
           </div>
 
-          <h2 style={{ marginTop: 26, marginBottom: 14 }}>3 · Generate</h2>
+          <h2 style={{ marginTop: 26, marginBottom: 14 }}>3 · Generieren</h2>
           <button className="btn primary" style={{ width: "100%" }} disabled={!image || progress >= 0} onClick={generate}>
-            {progress >= 0 ? "Rendering…" : `Generate clip · ${cost} credits`}
+            {progress >= 0 ? "Rendern…" : `Clip generieren · ${cost} Credits`}
           </button>
 
           <div className={`progress-wrap${progress >= 0 ? " show" : ""}`}>
             <div className="progress-bar"><div className="progress-fill" style={{ width: `${Math.max(progress, 3)}%` }} /></div>
             <div className="progress-label">
-              <span>{progress === 100 ? "Done!" : `Applying ${styleById(style)?.name} style with ${motionById(motion)?.name} motion…`}</span>
+              <span>{progress === 100 ? "Fertig!" : `${styleById(style)?.name}-Stil mit ${motionById(motion)?.name}-Bewegung wird angewendet…`}</span>
               <span>{progress >= 100 ? "100" : progress < 0 ? 0 : progress}%</span>
             </div>
           </div>

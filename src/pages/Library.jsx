@@ -18,11 +18,11 @@ export default function Library() {
     <div className="page wrap">
       <div className="page-head">
         <div>
-          <h1>Library</h1>
-          <p>{state.clips.length} clip{state.clips.length === 1 ? "" : "s"} saved · hover a card to see its motion</p>
+          <h1>Bibliothek</h1>
+          <p>{state.clips.length === 1 ? "1 Clip" : `${state.clips.length} Clips`} gespeichert · mit der Maus über eine Karte fahren, um die Bewegung zu sehen</p>
         </div>
         <div className="chips">
-          <button className={`chip${filter === "all" ? " on" : ""}`} onClick={() => setFilter("all")}>All</button>
+          <button className={`chip${filter === "all" ? " on" : ""}`} onClick={() => setFilter("all")}>Alle</button>
           {STYLES.map((s) => (
             <button key={s.id} className={`chip${filter === s.id ? " on" : ""}`} onClick={() => setFilter(s.id)}>{s.emoji} {s.name}</button>
           ))}
@@ -32,8 +32,8 @@ export default function Library() {
       {clips.length === 0 ? (
         <div className="empty panel">
           <div className="big">🎞️</div>
-          <p>No clips yet{filter !== "all" ? " in this style" : ""}.</p>
-          <Link className="btn primary" to="/generator" style={{ marginTop: 16 }}>Create your first clip</Link>
+          <p>Noch keine Clips{filter !== "all" ? " in diesem Stil" : ""}.</p>
+          <Link className="btn primary" to="/generator" style={{ marginTop: 16 }}>Ersten Clip erstellen</Link>
         </div>
       ) : (
         <div className="clips-grid">
@@ -56,7 +56,7 @@ export default function Library() {
                 <button
                   className="btn small danger"
                   onClick={() => set((s) => ({ ...s, clips: s.clips.filter((x) => x.id !== c.id) }))}
-                  title="Delete clip"
+                  title="Clip löschen"
                 >
                   ✕
                 </button>
@@ -80,8 +80,8 @@ export default function Library() {
                 </div>
               </div>
               {exporting ? (
-                <button className="btn small" disabled title="Export runs in your browser">
-                  Rendering… {Math.round(exporting.progress * 100)}%
+                <button className="btn small" disabled title="Der Export läuft direkt in deinem Browser">
+                  Rendern… {Math.round(exporting.progress * 100)}%
                 </button>
               ) : (
                 <button
@@ -97,10 +97,10 @@ export default function Library() {
                     }
                   }}
                 >
-                  ⬇ Export video
+                  ⬇ Video exportieren
                 </button>
               )}
-              <button className="btn small" onClick={() => setOpen(null)}>Close</button>
+              <button className="btn small" onClick={() => setOpen(null)}>Schließen</button>
             </div>
           </div>
         </div>

@@ -6,10 +6,10 @@ export default function ThankYou() {
   return (
     <div className="page wrap" style={{ textAlign: "center", paddingTop: 90 }}>
       <div style={{ fontSize: "3.4rem", marginBottom: 8 }}>🎉</div>
-      <h1 style={{ fontSize: "2.2rem" }}>Thank you — Pro unlocked!</h1>
+      <h1 style={{ fontSize: "2.2rem" }}>Danke — Pro freigeschaltet!</h1>
       <p style={{ color: "var(--dim)", maxWidth: 460, margin: "16px auto 0", lineHeight: 1.6 }}>
-        Your plan is now active. 1,200 credits have been added to your account and every
-        motion preset is available in the Generator.
+        Dein Plan ist jetzt aktiv. 1.200 Credits wurden deinem Konto gutgeschrieben und jedes
+        Bewegungs-Preset steht dir im Generator bereit.
       </p>
       <div style={{ display: "flex", gap: 14, justifyContent: "center", marginTop: 30 }}>
         <button
@@ -18,12 +18,12 @@ export default function ThankYou() {
             set((s) => ({ ...s, user: { ...s.user, plan: "Pro" }, credits: s.credits + 1200 }));
           }}
         >
-          Activate Pro
+          Pro aktivieren
         </button>
-        <Link className="btn" to="/generator">Start creating →</Link>
+        <Link className="btn" to="/generator">Loslegen →</Link>
       </div>
       <p style={{ color: "var(--dim)", fontSize: "0.8rem", marginTop: 22 }}>
-        (Demo purchase — no payment was processed.)
+        (Demo-Kauf — es wurde nichts abgebucht.)
       </p>
     </div>
   );
