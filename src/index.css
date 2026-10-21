@@ -72,6 +72,17 @@ button { font-family: inherit; cursor: pointer; }
 .nav-links { display: flex; gap: 22px; margin-left: auto; flex-wrap: wrap; }
 .nav-links a { color: var(--dim); font-size: 0.92rem; font-weight: 500; transition: color 0.2s; }
 .nav-links a:hover, .nav-links a.active { color: var(--text); }
+.lang-switch {
+  border: 1px solid var(--line); border-radius: 999px;
+  display: inline-flex; overflow: hidden; margin-left: 4px;
+}
+.lang-switch button {
+  background: none; border: none; padding: 5px 11px;
+  font-size: 0.72rem; font-weight: 700; color: var(--dim); letter-spacing: 0.04em;
+}
+.lang-switch button.on { background: var(--card-2); color: var(--text); }
+.lang-switch button:not(.on):hover { color: var(--text); }
+
 .credits-pill {
   border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px;
   font-size: 0.8rem; color: var(--dim); white-space: nowrap;

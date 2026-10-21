@@ -1,30 +1,33 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useStore, STYLES, motionById, styleById } from "../store.js";
+import { useStore, STYLES } from "../store.js";
+import { useT } from "../i18n.js";
 import { exportClip, downloadBlob } from "../exporter.js";
 
 const aspectClass = { "16:9": "16 / 9", "9:16": "9 / 16", "1:1": "1 / 1" };
 
 export default function Library() {
   const { state, set } = useStore();
+  const { t, lang } = useT();
   const [filter, setFilter] = useState("all");
   const [open, setOpen] = useState(null);
   const [exporting, setExporting] = useState(null); // { progress } while rendering
 
   const clips = state.clips.filter((c) => filter === "all" || c.style === filter);
   const clip = state.clips.find((c) => c.id === open);
+  const locale = lang === "de" ? "de-DE" : "en-US";
 
   return (
     <div className="page wrap">
       <div className="page-head">
         <div>
-          <h1>Bibliothek</h1>
-          <p>{state.clips.length === 1 ? "1 Clip" : `${state.clips.length} Clips`} gespeichert · mit der Maus über eine Karte fahren, um die Bewegung zu sehen</p>
+          <h1>{t("lib.title")}</h1>
+          <p>{t(state.clips.length === 1 ? "lib.countOne" : "lib.count", { n: state.clips.length })}</p>
         </div>
         <div className="chips">
-          <button className={`chip${filter === "all" ? " on" : ""}`} onClick={() => setFilter("all")}>Alle</button>
+          <button className={`chip${filter === "all" ? " on" : ""}`} onClick={() => setFilter("all")}>{t("lib.all")}</button>
           {STYLES.map((s) => (
-            <button key={s.id} className={`chip${filter === s.id ? " on" : ""}`} onClick={() => setFilter(s.id)}>{s.emoji} {s.name}</button>
+            <button key={s.id} className={`chip${filter === s.id ? " on" : ""}`} onClick={() => setFilter(s.id)}>{s.emoji} {t(`style.${s.id}`)}</button>
           ))}
         </div>
       </div>
@@ -32,8 +35,8 @@ export default function Library() {
       {clips.length === 0 ? (
         <div className="empty panel">
           <div className="big">🎞️</div>
-          <p>Noch keine Clips{filter !== "all" ? " in diesem Stil" : ""}.</p>
-          <Link className="btn primary" to="/generator" style={{ marginTop: 16 }}>Ersten Clip erstellen</Link>
+          <p>{t("lib.empty", { in: filter !== "all" ? t("lib.emptyIn") : "" })}</p>
+          <Link className="btn primary" to="/generator" style={{ marginTop: 16 }}>{t("lib.createFirst")}</Link>
         </div>
       ) : (
         <div className="clips-grid">
@@ -50,13 +53,13 @@ export default function Library() {
               <div className="clip-meta">
                 <div style={{ minWidth: 0 }}>
                   <div className="t">{c.title}</div>
-                  <div className="s">{motionById(c.motion)?.name} · {c.duration}s · {new Date(c.createdAt).toLocaleDateString()}</div>
+                  <div className="s">{t(`motion.${c.motion}`)} · {c.duration}s · {new Date(c.createdAt).toLocaleDateString(locale)}</div>
                 </div>
-                <span className="style-badge">{styleById(c.style)?.name}</span>
+                <span className="style-badge">{t(`style.${c.style}`)}</span>
                 <button
                   className="btn small danger"
                   onClick={() => set((s) => ({ ...s, clips: s.clips.filter((x) => x.id !== c.id) }))}
-                  title="Clip löschen"
+                  title={t("lib.delete")}
                 >
                   ✕
                 </button>
@@ -76,31 +79,31 @@ export default function Library() {
               <div>
                 <b>{clip.title}</b>
                 <div style={{ color: "var(--dim)", fontSize: "0.82rem", marginTop: 3 }}>
-                  {styleById(clip.style)?.name} · {motionById(clip.motion)?.name} · {clip.duration}s · {clip.aspect}
+                  {t(`style.${clip.style}`)} · {t(`motion.${clip.motion}`)} · {clip.duration}s · {clip.aspect}
                 </div>
               </div>
               {exporting ? (
-                <button className="btn small" disabled title="Der Export läuft direkt in deinem Browser">
-                  Rendern… {Math.round(exporting.progress * 100)}%
+                <button className="btn small" disabled title={t("lib.exportHint")}>
+                  {t("lib.rendering", { n: Math.round(exporting.progress * 100) })}
                 </button>
               ) : (
                 <button
                   className="btn small primary"
-                  title="Render this clip to a real .webm video, right in your browser"
+                  title={t("lib.exportHint")}
                   onClick={async () => {
                     setExporting({ progress: 0 });
                     try {
-                      const blob = await exportClip(clip, (t) => setExporting({ progress: t }));
+                      const blob = await exportClip(clip, (p) => setExporting({ progress: p }));
                       downloadBlob(blob, `${clip.title.replace(/[^\w-]+/g, "_")}.webm`);
                     } finally {
                       setExporting(null);
                     }
                   }}
                 >
-                  ⬇ Video exportieren
+                  {t("lib.export")}
                 </button>
               )}
-              <button className="btn small" onClick={() => setOpen(null)}>Schließen</button>
+              <button className="btn small" onClick={() => setOpen(null)}>{t("lib.close")}</button>
             </div>
           </div>
         </div>

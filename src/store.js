@@ -5,16 +5,22 @@ import { useEffect, useState } from "react";
 const KEY = "motioncraft:v1";
 
 const defaults = {
-  user: { name: "Creator", email: "du@beispiel.de", plan: "Kostenlos", role: "admin" },
+  lang: "de",
+  user: { name: "Creator", email: "du@beispiel.de", plan: "free", role: "admin" },
   credits: 24,
   clips: [],
   prefs: { style: "cinematic", motion: "ken-burns", duration: 8, aspect: "16:9", loop: true },
 };
 
+const PLAN_ALIASES = { Free: "free", Kostenlos: "free", free: "free", Pro: "pro", pro: "pro", Studio: "studio", studio: "studio" };
+
 function load() {
   try {
     const raw = localStorage.getItem(KEY);
-    return raw ? { ...defaults, ...JSON.parse(raw) } : { ...defaults };
+    const state = raw ? { ...defaults, ...JSON.parse(raw) } : { ...defaults };
+    // normalize legacy plan labels to language-neutral ids
+    state.user = { ...state.user, plan: PLAN_ALIASES[state.user?.plan] ?? "free" };
+    return state;
   } catch {
     return { ...defaults };
   }
@@ -48,20 +54,20 @@ export function useStore() {
 /* ===== Domain ===== */
 
 export const STYLES = [
-  { id: "cinematic", name: "Cinematic", emoji: "🎬", desc: "Filmreifer Look mit dramatischer Tiefe" },
-  { id: "anime", name: "Anime", emoji: "🌸", desc: "Leuchtende japanische Anime-Ästhetik" },
-  { id: "ugc", name: "UGC", emoji: "📱", desc: "Authentischer Creator-Look, wie vom Handy" },
-  { id: "neon", name: "Neon", emoji: "⚡", desc: "Energievoller Cyberpunk-Look" },
+  { id: "cinematic", emoji: "🎬" },
+  { id: "anime", emoji: "🌸" },
+  { id: "ugc", emoji: "📱" },
+  { id: "neon", emoji: "⚡" },
 ];
 
 export const MOTIONS = [
-  { id: "ken-burns", name: "Ken Burns", desc: "Klassischer langsamer Dokumentar-Drift" },
-  { id: "zoom-in", name: "Zoom-In", desc: "Langsame Fahrt aufs Motiv" },
-  { id: "zoom-out", name: "Zoom-Out", desc: "Die Szene öffnet sich" },
-  { id: "pan-left", name: "Schwenk links", desc: "Sanfte Bewegung nach links" },
-  { id: "pan-right", name: "Schwenk rechts", desc: "Sanfte Bewegung nach rechts" },
-  { id: "orbit", name: "Orbit", desc: "Leichter Bogen um die Bildmitte" },
-  { id: "parallax", name: "Parallax", desc: "Handheld-Schweben mit Tiefe" },
+  { id: "ken-burns" },
+  { id: "zoom-in" },
+  { id: "zoom-out" },
+  { id: "pan-left" },
+  { id: "pan-right" },
+  { id: "orbit" },
+  { id: "parallax" },
 ];
 
 export const DURATIONS = [5, 8, 10];
@@ -73,3 +79,6 @@ export function clipCost(duration) {
 
 export function styleById(id) { return STYLES.find((s) => s.id === id); }
 export function motionById(id) { return MOTIONS.find((m) => m.id === id); }
+
+/** Every key used by store + i18n that must survive across languages. */
+export const PLAN_KEYS = { free: "plan.free", pro: "plan.pro", studio: "plan.studio" };

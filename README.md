@@ -4,7 +4,7 @@ Transform your images into stunning animated clips. A React + Vite single-page a
 image-to-video AI tools: pick a style, choose a motion preset, and generate looping clips from
 still images — running entirely in the browser (demo mode, no backend, images never leave your device).
 
-**Live:** https://chowdory.github.io/motioncraft-ai/ — die komplette UI ist auf Deutsch.
+**Live:** https://chowdory.github.io/motioncraft-ai/ — mit Sprachumschaltung Deutsch ⇄ Englisch (Schalter oben rechts, Auswahl wird lokal gespeichert).
 
 ## Pages
 
@@ -29,6 +29,10 @@ works offline with zero infrastructure.
 motion preset on a canvas at 30 fps and records it with `MediaRecorder`, producing an actual
 downloadable WebM file — 1280×720, 720×1280, or 960×960 depending on aspect. The motion math
 (`motionFrame`) is pure and unit-tested (`npm test`).
+
+**i18n** (`src/i18n.js`): dependency-free translation dictionary (de/en) with a `useT()` hook
+that reads the language from the store. Plans are stored language-neutral (`free`/`pro`/`studio`)
+and rendered per language; legacy labels in existing localStorage are normalized on load.
 
 Swapping in a real backend later means replacing the `setTimeout` in
 `src/pages/Generator.jsx` with your API call and storing clips server-side.

@@ -1,9 +1,11 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useStore, STYLES, MOTIONS, DURATIONS, ASPECTS, clipCost, motionById, styleById } from "../store.js";
+import { useStore, STYLES, MOTIONS, DURATIONS, ASPECTS, clipCost } from "../store.js";
+import { useT } from "../i18n.js";
 
 export default function Generator() {
   const { state, set } = useStore();
+  const { t } = useT();
   const fileRef = useRef(null);
   const [image, setImage] = useState(null);
   const [drag, setDrag] = useState(false);
@@ -29,7 +31,7 @@ export default function Generator() {
   function generate() {
     if (!image) return;
     if (state.credits < cost) {
-      setToast({ msg: "Nicht genug Credits — du kannst sie auf der Profilseite aufladen.", kind: "warn" });
+      setToast({ msg: t("gen.noCredits"), kind: "warn" });
       setTimeout(() => setToast(null), 2600);
       return;
     }
@@ -64,7 +66,7 @@ export default function Generator() {
       }));
       setTimeout(() => {
         setProgress(-1);
-        setToast({ msg: "Clip generiert — er liegt jetzt in deiner Bibliothek.", kind: "ok" });
+        setToast({ msg: t("gen.doneToast"), kind: "ok" });
         setTimeout(() => setToast(null), 2600);
       }, 350);
     }, total);
@@ -74,15 +76,15 @@ export default function Generator() {
     <div className="page wrap">
       <div className="page-head">
         <div>
-          <h1>Generator</h1>
-          <p>Verwandle ein Standbild in einen animierten Clip. In dieser Demo läuft alles lokal im Browser.</p>
+          <h1>{t("gen.head")}</h1>
+          <p>{t("gen.headSub")}</p>
         </div>
-        <Link to="/library" className="btn small">Zur Bibliothek →</Link>
+        <Link to="/library" className="btn small">{t("gen.toLibrary")}</Link>
       </div>
 
       <div className="gen-layout">
         <div className="panel">
-          <h2>1 · Dein Bild</h2>
+          <h2>{t("gen.step1")}</h2>
           <div
             className={`dropzone${drag ? " drag" : ""}`}
             onClick={() => fileRef.current?.click()}
@@ -95,30 +97,30 @@ export default function Generator() {
             ) : (
               <div>
                 <div className="big">🖼️</div>
-                <b>Bild hierher ziehen</b>
-                <p>oder klicken zum Auswählen · JPG, PNG, WebP</p>
+                <b>{t("gen.drop")}</b>
+                <p>{t("gen.browse")}</p>
               </div>
             )}
           </div>
           <input ref={fileRef} type="file" accept="image/*" hidden onChange={(e) => pickFile(e.target.files[0])} />
 
           <div className="field">
-            <label>Clip-Titel</label>
-            <input className="input" value={title} placeholder="z. B. Porträt zur goldenen Stunde" onChange={(e) => setTitle(e.target.value)} />
+            <label>{t("gen.clipTitle")}</label>
+            <input className="input" value={title} placeholder={t("gen.titlePh")} onChange={(e) => setTitle(e.target.value)} />
           </div>
 
           <div className="field">
-            <label>Dauer · {duration} s</label>
+            <label>{t("gen.duration", { d: duration })}</label>
             <div className="chips">
               {DURATIONS.map((d) => (
                 <button key={d} className={`chip${duration === d ? " on" : ""}`} onClick={() => setDuration(d)}>{d}s</button>
               ))}
             </div>
-            <div className="hint">Kostet {cost} Credits</div>
+            <div className="hint">{t("gen.costs", { n: cost })}</div>
           </div>
 
           <div className="field">
-            <label>Seitenverhältnis</label>
+            <label>{t("gen.aspect")}</label>
             <div className="chips">
               {ASPECTS.map((a) => (
                 <button key={a} className={`chip${aspect === a ? " on" : ""}`} onClick={() => setAspect(a)}>{a}</button>
@@ -128,7 +130,7 @@ export default function Generator() {
         </div>
 
         <div className="panel">
-          <h2>2 · Stil & Bewegung</h2>
+          <h2>{t("gen.step2")}</h2>
           <div className="grid-3" style={{ marginTop: 6 }}>
             {STYLES.map((s) => (
               <div
@@ -139,38 +141,38 @@ export default function Generator() {
                 role="button"
               >
                 <div className="icon">{s.emoji}</div>
-                <h3>{s.name}</h3>
-                <p>{s.desc}</p>
+                <h3>{t(`style.${s.id}`)}</h3>
+                <p>{t(`styleDesc.${s.id}`)}</p>
               </div>
             ))}
           </div>
 
           <div className="field">
-            <label>Bewegungs-Preset</label>
+            <label>{t("gen.motionPreset")}</label>
             <div className="chips">
               {MOTIONS.map((m) => (
                 <button
                   key={m.id}
                   className={`chip${motion === m.id ? " on" : ""}`}
-                  title={m.desc}
+                  title={t(`motionDesc.${m.id}`)}
                   onClick={() => setMotion(m.id)}
                 >
-                  {m.name}
+                  {t(`motion.${m.id}`)}
                 </button>
               ))}
             </div>
-            <div className="hint">{motionById(motion)?.desc}</div>
+            <div className="hint">{t(`motionDesc.${motion}`)}</div>
           </div>
 
-          <h2 style={{ marginTop: 26, marginBottom: 14 }}>3 · Generieren</h2>
+          <h2 style={{ marginTop: 26, marginBottom: 14 }}>{t("gen.step3")}</h2>
           <button className="btn primary" style={{ width: "100%" }} disabled={!image || progress >= 0} onClick={generate}>
-            {progress >= 0 ? "Rendern…" : `Clip generieren · ${cost} Credits`}
+            {progress >= 0 ? t("gen.rendering") : t("gen.generate", { n: cost })}
           </button>
 
           <div className={`progress-wrap${progress >= 0 ? " show" : ""}`}>
             <div className="progress-bar"><div className="progress-fill" style={{ width: `${Math.max(progress, 3)}%` }} /></div>
             <div className="progress-label">
-              <span>{progress === 100 ? "Fertig!" : `${styleById(style)?.name}-Stil mit ${motionById(motion)?.name}-Bewegung wird angewendet…`}</span>
+              <span>{progress === 100 ? t("gen.done") : t("gen.progress", { style: t(`style.${style}`), motion: t(`motion.${motion}`) })}</span>
               <span>{progress >= 100 ? "100" : progress < 0 ? 0 : progress}%</span>
             </div>
           </div>

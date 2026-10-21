@@ -1,21 +1,23 @@
 import { useStore, STYLES, MOTIONS } from "../store.js";
+import { useT } from "../i18n.js";
 
 export default function Profile() {
   const { state, set } = useStore();
+  const { t } = useT();
   const u = state.user;
 
   return (
     <div className="page wrap">
       <div className="page-head">
         <div>
-          <h1>Profile</h1>
-          <p>Deine Identität, dein Plan und die Standard-Einstellungen des Generators.</p>
+          <h1>{t("prof.head")}</h1>
+          <p>{t("prof.headSub")}</p>
         </div>
-        <span className="pill pro">{u.plan}-Plan</span>
+        <span className="pill pro">{t(`plan.${u.plan}`)}{t("planSuffix")}</span>
       </div>
 
       <div className="panel">
-        <h2>Identität</h2>
+        <h2>{t("prof.identity")}</h2>
         <div style={{ display: "flex", gap: 18, alignItems: "center", flexWrap: "wrap" }}>
           <div
             style={{
@@ -29,13 +31,13 @@ export default function Profile() {
             <input
               className="input"
               value={u.name}
-              placeholder="Anzeigename"
+              placeholder={t("prof.displayName")}
               onChange={(e) => set((s) => ({ ...s, user: { ...s.user, name: e.target.value } }))}
             />
             <input
               className="input"
               value={u.email}
-              placeholder="E-Mail"
+              placeholder={t("prof.email")}
               onChange={(e) => set((s) => ({ ...s, user: { ...s.user, email: e.target.value } }))}
             />
           </div>
@@ -43,9 +45,9 @@ export default function Profile() {
       </div>
 
       <div className="panel">
-        <h2>Credits</h2>
+        <h2>{t("prof.credits")}</h2>
         <p style={{ color: "var(--dim)", fontSize: "0.9rem" }}>
-          {state.credits} Credits übrig · jeder Clip kostet je nach Dauer 2–4.
+          {t("prof.creditsText", { n: state.credits })}
         </p>
         <button
           className="btn"
@@ -54,14 +56,14 @@ export default function Profile() {
             set((s) => ({ ...s, credits: s.credits + 24 }));
           }}
         >
-          +24 Demo-Credits
+          {t("prof.refill")}
         </button>
       </div>
 
       <div className="panel">
-        <h2>Standard-Einstellungen des Generators</h2>
+        <h2>{t("prof.defaults")}</h2>
         <div className="field">
-          <label>Stil</label>
+          <label>{t("prof.style")}</label>
           <div className="chips">
             {STYLES.map((s) => (
               <button
@@ -69,13 +71,13 @@ export default function Profile() {
                 className={`chip${state.prefs.style === s.id ? " on" : ""}`}
                 onClick={() => set((st) => ({ ...st, prefs: { ...st.prefs, style: s.id } }))}
               >
-                {s.emoji} {s.name}
+                {s.emoji} {t(`style.${s.id}`)}
               </button>
             ))}
           </div>
         </div>
         <div className="field">
-          <label>Bewegung</label>
+          <label>{t("prof.motion")}</label>
           <div className="chips">
             {MOTIONS.map((m) => (
               <button
@@ -83,7 +85,7 @@ export default function Profile() {
                 className={`chip${state.prefs.motion === m.id ? " on" : ""}`}
                 onClick={() => set((st) => ({ ...st, prefs: { ...st.prefs, motion: m.id } }))}
               >
-                {m.name}
+                {t(`motion.${m.id}`)}
               </button>
             ))}
           </div>

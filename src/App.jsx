@@ -7,9 +7,11 @@ import Profile from "./pages/Profile.jsx";
 import Admin from "./pages/Admin.jsx";
 import ThankYou from "./pages/ThankYou.jsx";
 import { useStore } from "./store.js";
+import { useT, LANGS } from "./i18n.js";
 
 function Navbar() {
   const { state } = useStore();
+  const { t, lang, setLang } = useT();
   return (
     <nav className="nav">
       <div className="nav-inner">
@@ -18,12 +20,19 @@ function Navbar() {
         </Link>
         <div className="nav-links">
           <NavLink to="/generator">Generator</NavLink>
-          <NavLink to="/library">Bibliothek</NavLink>
-          <NavLink to="/dashboard">Dashboard</NavLink>
-          <NavLink to="/profile">Profil</NavLink>
+          <NavLink to="/library">{t("nav.library")}</NavLink>
+          <NavLink to="/dashboard">{t("nav.dashboard")}</NavLink>
+          <NavLink to="/profile">{t("nav.profile")}</NavLink>
           <NavLink to="/admin">Admin</NavLink>
         </div>
-        <span className="credits-pill"><b>{state.credits}</b> Credits</span>
+        <div className="lang-switch" role="group" aria-label="Language">
+          {LANGS.map((l) => (
+            <button key={l} className={lang === l ? "on" : ""} onClick={() => setLang(l)}>
+              {l.toUpperCase()}
+            </button>
+          ))}
+        </div>
+        <span className="credits-pill"><b>{state.credits}</b> {t("nav.credits")}</span>
       </div>
     </nav>
   );
@@ -33,8 +42,8 @@ function Footer() {
   return (
     <footer className="site">
       <div className="wrap cols">
-        <span>© {new Date().getFullYear()} MotionCraft AI — Demo-Build, die Generierung läuft lokal im Browser.</span>
-        <span>Gebaut mit React + Vite · Live auf GitHub Pages</span>
+        <span>© {new Date().getFullYear()} MotionCraft AI — {t("footer.demo")}.</span>
+        <span>{t("footer.tech")}</span>
       </div>
     </footer>
   );
