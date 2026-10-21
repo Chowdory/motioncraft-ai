@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useStore, STYLES, motionById, styleById } from "../store.js";
+import { exportClip, downloadBlob } from "../exporter.js";
 
 const aspectClass = { "16:9": "16 / 9", "9:16": "9 / 16", "1:1": "1 / 1" };
 
@@ -8,6 +9,7 @@ export default function Library() {
   const { state, set } = useStore();
   const [filter, setFilter] = useState("all");
   const [open, setOpen] = useState(null);
+  const [exporting, setExporting] = useState(null); // { progress } while rendering
 
   const clips = state.clips.filter((c) => filter === "all" || c.style === filter);
   const clip = state.clips.find((c) => c.id === open);
@@ -77,6 +79,27 @@ export default function Library() {
                   {styleById(clip.style)?.name} · {motionById(clip.motion)?.name} · {clip.duration}s · {clip.aspect}
                 </div>
               </div>
+              {exporting ? (
+                <button className="btn small" disabled title="Export runs in your browser">
+                  Rendering… {Math.round(exporting.progress * 100)}%
+                </button>
+              ) : (
+                <button
+                  className="btn small primary"
+                  title="Render this clip to a real .webm video, right in your browser"
+                  onClick={async () => {
+                    setExporting({ progress: 0 });
+                    try {
+                      const blob = await exportClip(clip, (t) => setExporting({ progress: t }));
+                      downloadBlob(blob, `${clip.title.replace(/[^\w-]+/g, "_")}.webm`);
+                    } finally {
+                      setExporting(null);
+                    }
+                  }}
+                >
+                  ⬇ Export video
+                </button>
+              )}
               <button className="btn small" onClick={() => setOpen(null)}>Close</button>
             </div>
           </div>

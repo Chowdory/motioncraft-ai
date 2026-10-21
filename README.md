@@ -12,7 +12,7 @@ still images — running entirely in the browser (demo mode, no backend, images 
 |---|---|
 | **Landing** | Hero, features, how-it-works, pricing, FAQ |
 | **Generator** | Drag-and-drop image upload, 4 styles (Cinematic / Anime / UGC / Neon), 7 motion presets, duration & aspect controls, credit system, animated render progress |
-| **Library** | Saved clips grid with live motion playback, style filters, fullscreen modal, delete |
+| **Library** | Saved clips grid with live motion playback, style filters, fullscreen modal, delete — plus **Export Studio**: any clip renders to a real `.webm` video, recorded in the browser via canvas + MediaRecorder |
 | **Dashboard** | Usage stats, clips-by-style breakdown, recent activity table |
 | **Profile** | Identity, plan, demo credit refill, default generator preferences |
 | **Admin** | Workspace stats and demo users table |
@@ -24,6 +24,11 @@ This is an honest demo: instead of calling a video model, the app animates the u
 image with CSS motion presets (Ken Burns, zoom, pan, orbit, parallax) scaled to the chosen
 duration. The clip is stored as `data URL + settings` in localStorage — so the whole product
 works offline with zero infrastructure.
+
+**Export Studio** (`src/exporter.js`) is the one genuinely real output: it replays a clip's
+motion preset on a canvas at 30 fps and records it with `MediaRecorder`, producing an actual
+downloadable WebM file — 1280×720, 720×1280, or 960×960 depending on aspect. The motion math
+(`motionFrame`) is pure and unit-tested (`npm test`).
 
 Swapping in a real backend later means replacing the `setTimeout` in
 `src/pages/Generator.jsx` with your API call and storing clips server-side.
